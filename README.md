@@ -2,185 +2,262 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bill Tracker Deluxe</title>
+    <title>Bill Slayer HQ</title>
     <style>
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: 'Bebas Neue', Arial, sans-serif;
             margin: 0;
             padding: 10px;
-            background: linear-gradient(135deg, #b2fefa, #ff9a8b); /* Bright, jazzy gradient */
-            color: #1a202c; /* Deep gray for contrast */
-            max-width: 375px; /* iPhone screen width */
+            background: linear-gradient(135deg, #ffcc00, #ff00cc, #00ff99); /* Yellow-magenta-green */
+            color: #fff;
+            max-width: 375px;
             margin-left: auto;
             margin-right: auto;
-            overflow-x: hidden; /* No horizontal scroll */
+            overflow-x: hidden;
+            box-sizing: border-box;
+            animation: bgPulse 6s infinite alternate;
         }
         h1 {
-            font-size: 2.5em;
+            font-size: 2.2em;
             text-align: center;
-            color: #fff;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
+            color: #ff00cc; /* Neon magenta */
+            text-shadow: 0 0 10px #00ff99, 0 0 20px #ffcc00;
             margin: 10px 0;
-            animation: pulse 2s infinite;
+            animation: titleSlam 1.5s infinite;
         }
         #current-date {
             text-align: center;
-            font-size: 1.2em;
+            font-size: 1.1em;
             color: #fff;
             margin-bottom: 15px;
-            font-weight: bold;
+            text-shadow: 0 0 5px #000;
         }
         .container {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
+            width: 100%;
         }
         .card {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            background: rgba(0, 0, 0, 0.85);
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5), inset 0 0 5px #ff00cc;
             text-align: center;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
         }
         .card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            transform: scale(1.04);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.7), inset 0 0 10px #00ff99;
         }
         .card h3 {
-            font-size: 1.5em;
+            font-size: 1.4em;
             margin: 0;
-            color: #1a202c;
+            color: #fff;
+            text-shadow: 0 0 6px #000;
         }
         .card p {
-            font-size: 1em;
-            margin: 5px 0;
+            font-size: 0.9em;
+            margin: 4px 0;
+            color: #e0e0e0;
+            text-shadow: 0 0 3px #000;
         }
         .card.urgent {
-            border: 4px solid #ff00ff; /* Neon magenta */
-            padding: 20px;
-            transform: scale(1.1);
-            background: rgba(255, 240, 245, 0.9);
-            box-shadow: 0 0 15px #ff00ff, 0 0 25px #00ffff; /* Neon glow */
-            animation: vibrate 0.1s infinite, pulse 1s infinite;
+            border: 4px solid #ff00cc; /* Neon magenta */
+            padding: 15px;
+            transform: scale(1.06);
+            background: rgba(50, 0, 50, 0.9);
+            box-shadow: 0 0 20px #ff00cc, 0 0 30px #00ff99, inset 0 0 10px #ff00cc;
+            animation: urgentScream 0.5s infinite;
         }
         .card.near-due {
-            border: 3px solid #00ffff; /* Neon cyan */
-            padding: 18px;
-            transform: scale(1.05);
-            background: rgba(240, 255, 255, 0.9);
-            box-shadow: 0 0 10px #00ffff;
+            border: 3px solid #00ff99; /* Neon green */
+            padding: 14px;
+            transform: scale(1.03);
+            box-shadow: 0 0 15px #00ff99, inset 0 0 5px #00ff99;
+            animation: nearBuzz 1s infinite;
         }
         .card.small {
             padding: 10px;
             font-size: 0.8em;
         }
         .card.small h3 { font-size: 1.2em; }
+        .card.completed {
+            background: linear-gradient(135deg, #ffcc00, #ff8c00); /* Yellow-orange victory */
+            border: 4px solid #ffcc00;
+            box-shadow: 0 0 20px #ffcc00, inset 0 0 10px #ffcc00;
+            animation: victoryGlow 1.2s infinite;
+        }
+        .card.completed h3::after {
+            content: " 🤘 SLAYED";
+            color: #fff;
+            font-size: 0.8em;
+            text-shadow: 0 0 5px #000;
+        }
         .section {
             margin: 20px 0;
-            background: rgba(255, 255, 255, 0.85);
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            animation: fadeIn 1s ease-in;
+            background: rgba(0, 0, 0, 0.75);
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5), inset 0 0 5px #00ff99;
+            width: 100%;
+            box-sizing: border-box;
+            animation: fadeIn 0.8s ease-in;
+            position: relative;
         }
         .section h2 {
-            font-size: 1.8em;
-            color: #2b6cb0;
+            font-size: 1.6em;
+            color: #ff00cc;
             text-align: center;
-            margin: 10px 0;
-            font-weight: bold;
+            margin: 8px 0;
+            text-shadow: 0 0 8px #00ff99;
         }
         canvas {
             max-width: 100%;
-            margin: 15px 0;
+            margin: 10px 0;
+            border: 1px solid #ff00cc;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .chart-popout {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 350px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 3px solid #ffcc00;
+            box-shadow: 0 0 30px #ff00cc;
+            z-index: 1000;
+            border-radius: 10px;
+        }
+        .chart-popout canvas {
+            max-width: 100%;
+        }
+        .chart-popout h2 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
         }
         .progress-bar {
             width: 100%;
-            margin: 15px 0;
-            background: #e2e8f0;
-            border-radius: 8px;
+            margin: 10px 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
             overflow: hidden;
+            box-shadow: 0 0 8px #ff00cc;
         }
         .progress {
-            height: 20px;
+            height: 18px;
             text-align: center;
             color: #fff;
-            font-size: 0.9em;
+            font-size: 0.8em;
             transition: width 1s ease-in-out;
+            text-shadow: 0 0 4px #000;
         }
-        .progress.success { background: #00ff7f; /* Neon spring green */ }
-        .progress.warning { background: #ff4500; /* Neon orange-red */ }
+        .progress.success { background: #ffcc00; }
+        .progress.warning { background: #ff4500; }
         .sobriety-section {
-            background: linear-gradient(135deg, #00ff7f, #00b894); /* Neon green vibe */
-            color: #fff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 10px #00ff7f;
+            background: linear-gradient(135deg, #ffcc00, #ff8c00);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px #ffcc00, inset 0 0 10px #00ff99;
+            width: 100%;
+            box-sizing: border-box;
         }
         .sobriety-section h2 {
-            font-size: 2em;
-            color: #fff;
-            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            font-size: 1.7em;
+            text-shadow: 0 0 10px #ff00cc;
         }
         .sobriety-section p {
-            font-size: 1.1em;
-            margin: 8px 0;
+            font-size: 1em;
+            margin: 6px 0;
         }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        .checklist {
+            margin-top: 10px;
+            text-align: left;
+            font-size: 0.9em;
+            color: #e0e0e0;
         }
-        @keyframes vibrate {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-2px); }
-            50% { transform: translateX(2px); }
-            75% { transform: translateX(-2px); }
-            100% { transform: translateX(0); }
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+        }
+        .checklist-item input {
+            margin-right: 8px;
+        }
+        @keyframes bgPulse {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 100% 100%; }
+        }
+        @keyframes titleSlam {
+            0% { transform: scale(1); text-shadow: 0 0 10px #00ff99, 0 0 20px #ffcc00; }
+            50% { transform: scale(1.05); text-shadow: 0 0 15px #00ff99, 0 0 30px #ffcc00; }
+            100% { transform: scale(1); text-shadow: 0 0 10px #00ff99, 0 0 20px #ffcc00; }
+        }
+        @keyframes urgentScream {
+            0% { box-shadow: 0 0 15px #ff00cc, 0 0 25px #00ff99, inset 0 0 10px #ff00cc; }
+            50% { box-shadow: 0 0 30px #ff00cc, 0 0 40px #00ff99, inset 0 0 15px #ff00cc; }
+            100% { box-shadow: 0 0 15px #ff00cc, 0 0 25px #00ff99, inset 0 0 10px #ff00cc; }
+        }
+        @keyframes nearBuzz {
+            0% { box-shadow: 0 0 10px #00ff99, inset 0 0 5px #00ff99; }
+            50% { box-shadow: 0 0 20px #00ff99, inset 0 0 10px #00ff99; }
+            100% { box-shadow: 0 0 10px #00ff99, inset 0 0 5px #00ff99; }
+        }
+        @keyframes victoryGlow {
+            0% { box-shadow: 0 0 15px #ffcc00, inset 0 0 10px #ffcc00; }
+            50% { box-shadow: 0 0 25px #ffcc00, inset 0 0 15px #ffcc00; }
+            100% { box-shadow: 0 0 15px #ffcc00, inset 0 0 10px #ffcc00; }
         }
         @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>Bill Tracker Deluxe</h1>
+    <h1>Bill Slayer HQ</h1>
     <div id="current-date">Loading date...</div>
     <div class="container" id="bill-container"></div>
 
     <div class="section">
-        <h2>Monthly Summary</h2>
-        <p>Total Income: $<span id="total-income">0</span></p>
-        <p>Total Expenses: $<span id="total-expenses">0</span></p>
-        <p>Net Cash Flow: $<span id="net-cash-flow">0</span></p>
+        <h2>💸 Cash Flow 💸</h2>
+        <p>Income: $<span id="total-income">0</span></p>
+        <p>Expenses: $<span id="total-expenses">0</span></p>
+        <p>Net: $<span id="net-cash-flow">0</span></p>
         <canvas id="incomeExpenseChart"></canvas>
+        <div class="checklist" id="bill-checklist"></div>
     </div>
 
     <div class="section">
-        <h2>Expense Breakdown</h2>
+        <h2>📈 Bill Breakdown 📈</h2>
         <canvas id="expensePieChart"></canvas>
     </div>
 
     <div class="section">
-        <h2>Goals & Progress</h2>
-        <p>Savings: $<span id="savings">7500</span> (Goal: $10,000)</p>
+        <h2>⚡ Goals ⚡</h2>
+        <p>Savings: $<span id="savings">7500</span> / $10,000</p>
         <div class="progress-bar"><div class="progress" id="savings-progress"></div></div>
-        <p>HELOC: $<span id="heloc-owed">31000</span> owed (Goal: $0)</p>
+        <p>HELOC: $<span id="heloc-owed">31000</span> / $0</p>
         <div class="progress-bar"><div class="progress" id="heloc-progress"></div></div>
         <canvas id="goalsChart"></canvas>
     </div>
 
     <div class="section sobriety-section">
-        <h2>🔥 Sobriety Journey 🔥</h2>
-        <p>Days Sober: <span id="days-sober">0</span> (<span id="years-sober">0</span> yrs)</p>
-        <p>Savings: $<span id="sobriety-savings">0</span> 💰</p>
+        <h2>🍺 Sobriety Kick 🍺</h2>
+        <p>Days: <span id="days-sober">0</span> (<span id="years-sober">0</span> yrs)</p>
+        <p>Savings: $<span id="sobriety-savings">0</span></p>
         <canvas id="sobrietySavingsChart"></canvas>
     </div>
 
     <div class="section">
-        <h2>Assets & Liabilities</h2>
+        <h2>🏍️ Assets & Debts 🏍️</h2>
         <p>House: $310,000 (Equity: $<span id="house-equity">0</span>)</p>
         <p>Tundra: $10,000+</p>
         <p>HELOC: $<span id="heloc-owed-display">31000</span> / $40,000</p>
@@ -188,8 +265,8 @@
     </div>
 
     <div class="section">
-        <h2>Egg Income</h2>
-        <p>Eggs Today: <span id="eggs-today">0</span> ($0.50/egg)</p>
+        <h2>🐔 Egg Hustle 🐔</h2>
+        <p>Today: <span id="eggs-today">0</span> ($0.50/egg)</p>
         <p>Monthly: $<span id="egg-income">0</span></p>
     </div>
 
@@ -201,19 +278,19 @@
 
         // Bill data
         const bills = [
-            { name: "Student Loans", dueDay: 6, amount: 260 },
-            { name: "State Farm Insurance", dueDay: 6, amount: 130 },
-            { name: "Mortgage", dueDay: 4, amount: 1690, interest: 3.5 },
-            { name: "Eversource", dueDay: 13, amount: 175 },
-            { name: "Verizon", dueDay: 6, amount: 100 },
-            { name: "GitHub", dueDay: 15, amount: 4 },
-            { name: "ChatGPT", dueDay: 15, amount: 20 },
-            { name: "Printing", dueDay: 20, amount: 40 },
-            { name: "Shopify", dueDay: 20, amount: 40 },
-            { name: "HELOC", dueDay: 25, amount: 200, interest: 7.5 },
-            { name: "Natural Gas", dueDay: 13, amount: 30 },
-            { name: "Groceries", dueDay: 1, amount: 400 },
-            { name: "Entertainment", dueDay: 1, amount: 200 }
+            { name: "Student Loans", dueDay: 6, amount: 260, completed: false },
+            { name: "State Farm Insurance", dueDay: 6, amount: 130, completed: false },
+            { name: "Mortgage", dueDay: 4, amount: 1690, interest: 3.5, completed: false },
+            { name: "Eversource", dueDay: 13, amount: 175, completed: false },
+            { name: "Verizon", dueDay: 6, amount: 100, completed: false },
+            { name: "GitHub", dueDay: 15, amount: 4, completed: false },
+            { name: "ChatGPT", dueDay: 15, amount: 20, completed: false },
+            { name: "Printing", dueDay: 20, amount: 40, completed: false },
+            { name: "Shopify", dueDay: 20, amount: 40, completed: false },
+            { name: "HELOC", dueDay: 25, amount: 200, interest: 7.5, completed: false },
+            { name: "Natural Gas", dueDay: 13, amount: 30, completed: false },
+            { name: "Groceries", dueDay: 1, amount: 400, completed: false },
+            { name: "Entertainment", dueDay: 1, amount: 200, completed: false }
         ];
 
         // Income data
@@ -231,7 +308,7 @@
         const monthlyIncome = (weeklyIncome * 4) + tenant1Income + tenant2Income + eggIncome + (sobrietySavingsPerWeek * 4);
 
         // Financial data
-        const savings = 7500; // Updated to $7,500 base
+        const savings = 7500;
         const savingsGoal = 10000;
         const helocOwed = 31000;
         const helocAvailable = 40000;
@@ -253,7 +330,7 @@
         // Sort bills by days until due
         bills.sort((a, b) => daysUntilDue(a.dueDay) - daysUntilDue(b.dueDay));
 
-        // Render bills
+        // Render bills with interactivity
         const billContainer = document.getElementById('bill-container');
         bills.forEach(bill => {
             const daysLeft = daysUntilDue(bill.dueDay);
@@ -262,13 +339,37 @@
             if (daysLeft <= 3 && daysLeft >= 0) billDiv.classList.add('urgent');
             else if (daysLeft <= 7) billDiv.classList.add('near-due');
             if (bill.amount < 100 && daysLeft > 7) billDiv.classList.add('small');
+            if (bill.completed) billDiv.classList.add('completed');
             billDiv.innerHTML = `
                 <h3>${bill.name}</h3>
                 <p>$${bill.amount}${bill.interest ? ` (${bill.interest}%)` : ''}</p>
                 <p>Due in ${daysLeft >= 0 ? daysLeft : "Overdue by " + Math.abs(daysLeft)} days</p>
             `;
+            billDiv.addEventListener('click', () => {
+                if (!billDiv.classList.contains('completed')) {
+                    billDiv.classList.add('completed');
+                    bill.completed = true;
+                    updateChecklist();
+                }
+            });
             billContainer.appendChild(billDiv);
         });
+
+        // Bill checklist
+        function updateChecklist() {
+            const checklist = document.getElementById('bill-checklist');
+            checklist.innerHTML = '<h3>BILL SLAY LIST</h3>';
+            bills.forEach(bill => {
+                const item = document.createElement('div');
+                item.classList.add('checklist-item');
+                item.innerHTML = `
+                    <input type="checkbox" ${bill.completed ? 'checked' : ''} disabled>
+                    ${bill.name} - $${bill.amount}
+                `;
+                checklist.appendChild(item);
+            });
+        }
+        updateChecklist();
 
         // Summary
         const totalExpenses = bills.reduce((sum, bill) => sum + bill.amount, 0);
@@ -309,84 +410,47 @@
         document.getElementById('years-sober').textContent = (daysSober / 365).toFixed(1);
         document.getElementById('sobriety-savings').textContent = sobrietySavings.toFixed(2);
 
-        // Charts
-        // 1. Income vs Expenses
-        new Chart(document.getElementById('incomeExpenseChart').getContext('2d'), {
-            type: 'bar',
-            data: {
-                labels: ['Income', 'Expenses'],
-                datasets: [{
-                    label: 'Monthly ($)',
-                    data: [monthlyIncome, totalExpenses],
-                    backgroundColor: ['#00ff7f', '#ff4500'],
-                    borderWidth: 1
-                }]
-            },
-            options: { scales: { y: { beginAtZero: true } } }
-        });
+        // Chart pop-out functionality
+        const charts = [
+            { id: 'incomeExpenseChart', title: 'Cash Flow', data: { labels: ['Income', 'Expenses'], datasets: [{ label: 'Monthly ($)', data: [monthlyIncome, totalExpenses], backgroundColor: ['#00ff99', '#ff00cc'], borderWidth: 1 }] }, type: 'bar' },
+            { id: 'expensePieChart', title: 'Bill Breakdown', data: { labels: bills.map(b => b.name), datasets: [{ data: bills.map(b => b.amount), backgroundColor: ['#00ff99', '#ff00cc', '#ffcc00', '#ffd700', '#ff4500', '#1a0033', '#00b894', '#ff8c00', '#a0aec0', '#f56565', '#b0c4de', '#9400d3', '#e0e0e0'], borderWidth: 1 }] }, type: 'pie' },
+            { id: 'goalsChart', title: 'Goals', data: { labels: ['Savings', 'HELOC Payoff'], datasets: [{ label: 'Current ($)', data: [savings, helocOwed], backgroundColor: ['#00ff99', '#ff00cc'], borderWidth: 1 }, { label: 'Target ($)', data: [savingsGoal, 0], backgroundColor: ['#00cc66', '#d63031'], borderWidth: 1 }] }, type: 'bar' },
+            { id: 'sobrietySavingsChart', title: 'Sobriety Savings', data: { labels: Array.from({ length: weeksSober + 1 }, (_, i) => `W${i}`), datasets: [{ label: 'Savings ($)', data: Array.from({ length: weeksSober + 1 }, (_, i) => i * sobrietySavingsPerWeek), borderColor: '#fff', backgroundColor: 'rgba(255, 255, 255, 0.3)', fill: true, tension: 0.3 }] }, type: 'line' },
+            { id: 'netWorthChart', title: 'Net Worth', data: { labels: ['House Equity', 'Tundra', 'Savings', 'HELOC Debt'], datasets: [{ data: [houseEquity, tundraValue, savings, helocOwed], backgroundColor: ['#ff00cc', '#ffd700', '#00ff99', '#ff4500'], borderWidth: 1 }] }, type: 'doughnut' }
+        ];
 
-        // 2. Expense Breakdown Pie
-        new Chart(document.getElementById('expensePieChart').getContext('2d'), {
-            type: 'pie',
-            data: {
-                labels: bills.map(b => b.name),
-                datasets: [{
-                    data: bills.map(b => b.amount),
-                    backgroundColor: ['#00b7eb', '#ff4500', '#00ff7f', '#ffd700', '#ff00ff', '#1a202c', '#00ced1', '#ff8c00', '#a9a9a9', '#ff69b4', '#b0c4de', '#9400d3', '#f0f8ff'],
-                    borderWidth: 1
-                }]
-            }
-        });
+        charts.forEach(chart => {
+            const canvas = document.getElementById(chart.id);
+            const ctx = canvas.getContext('2d');
+            const chartInstance = new Chart(ctx, {
+                type: chart.type,
+                data: chart.data,
+                options: { scales: chart.type === 'bar' || chart.type === 'line' ? { y: { beginAtZero: true } } : {} }
+            });
 
-        // 3. Goals Progress
-        new Chart(document.getElementById('goalsChart').getContext('2d'), {
-            type: 'bar',
-            data: {
-                labels: ['Savings', 'HELOC Payoff'],
-                datasets: [{
-                    label: 'Current ($)',
-                    data: [savings, helocOwed],
-                    backgroundColor: ['#00b7eb', '#ff4500'],
-                    borderWidth: 1
-                }, {
-                    label: 'Target ($)',
-                    data: [savingsGoal, 0],
-                    backgroundColor: ['#008bb5', '#d63031'],
-                    borderWidth: 1
-                }]
-            },
-            options: { scales: { y: { beginAtZero: true } } }
-        });
+            canvas.addEventListener('click', () => {
+                const existingPopout = document.querySelector('.chart-popout');
+                if (existingPopout) existingPopout.remove();
 
-        // 4. Sobriety Savings Line
-        new Chart(document.getElementById('sobrietySavingsChart').getContext('2d'), {
-            type: 'line',
-            data: {
-                labels: Array.from({ length: weeksSober + 1 }, (_, i) => `W${i}`),
-                datasets: [{
-                    label: 'Savings ($)',
-                    data: Array.from({ length: weeksSober + 1 }, (_, i) => i * sobrietySavingsPerWeek),
-                    borderColor: '#fff',
-                    backgroundColor: 'rgba(255, 255, 255, 0.3)',
-                    fill: true,
-                    tension: 0.3
-                }]
-            },
-            options: { scales: { y: { beginAtZero: true } } }
-        });
+                const popout = document.createElement('div');
+                popout.classList.add('chart-popout');
+                popout.innerHTML = `<h2>${chart.title}</h2><canvas id="popout-${chart.id}"></canvas>`;
+                document.body.appendChild(popout);
 
-        // 5. Net Worth
-        const netWorth = houseEquity + tundraValue + savings - helocOwed;
-        new Chart(document.getElementById('netWorthChart').getContext('2d'), {
-            type: 'doughnut',
-            data: {
-                labels: ['House Equity', 'Tundra', 'Savings', 'HELOC Debt'],
-                datasets: [{
-                    data: [houseEquity, tundraValue, savings, helocOwed],
-                    backgroundColor: ['#ff00ff', '#ffd700', '#00ff7f', '#ff4500'],
-                    borderWidth: 1
-                }]
-            }
+                const popoutCanvas = document.getElementById(`popout-${chart.id}`);
+                const popoutCtx = popoutCanvas.getContext('2d');
+                new Chart(popoutCtx, {
+                    type: chart.type,
+                    data: chart.data,
+                    options: {
+                        scales: chart.type === 'bar' || chart.type === 'line' ? { y: { beginAtZero: true } } : {},
+                        plugins: { legend: { labels: { font: { size: 16 } } } },
+                        animation: { duration: 1000, easing: 'easeInOutBounce' }
+                    }
+                });
+
+                popout.addEventListener('click', () => popout.remove());
+            });
         });
     </script>
 </body>
